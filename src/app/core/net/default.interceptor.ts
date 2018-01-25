@@ -12,7 +12,7 @@ import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 
 /**
- * 默认HTTP拦截器，其注册细节见 `app.module.ts`
+ * 默认HTTP拦截器，其注册细节见 `core.module.ts`
  */
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
