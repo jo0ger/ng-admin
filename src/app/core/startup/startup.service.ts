@@ -80,7 +80,7 @@ export class StartupService {
         this.menuService.add([
             {
                 text: '主导航',
-                group: true,
+                group: false,
                 children: [
                     {
                         text: '仪表盘',
@@ -106,9 +106,9 @@ export class StartupService {
         // https://github.com/angular/angular/issues/15088
         return new Promise((resolve, reject) => {
             // http
-            // this.viaHttp(resolve, reject);
+            this.viaHttp(resolve, reject);
             // mock
-            this.viaMock(resolve, reject);
+            // this.viaMock(resolve, reject);
         });
     }
 }

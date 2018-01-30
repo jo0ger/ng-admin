@@ -1,0 +1,46 @@
+{
+    "app": {
+        "name": "Ng-Admin",
+        "description": "This is Ng-Admin"
+    },
+    "user": {
+        "name": "Admin",
+        "avatar": "./assets/img/avatar.jpg",
+        "email": "iamjooger@gmail.com"
+    },
+    "menu": [{
+        "text": "站点管理",
+        "group": true,
+        "children": [{
+            "text": "仪表盘",
+            "link": "/dashboard",
+            "icon": "icon-speedometer"
+        }, {
+            "text": "站点参数",
+            "link": "/option",
+            "icon": "icon-settings"
+        }]
+    }, {
+        "text": "内容管理",
+        "group": true,
+        "children": [{
+            "text": "博客管理",
+            "link": "/blog",
+            "icon": "icon-grid",
+            "group": true,
+            "children": [{
+              "text": "文章",
+              "link": "/blog/article"
+            }, {
+              "text": "分类",
+              "link": "/blog/category"
+            }, {
+              "text": "标签",
+              "link": "/blog/tag"
+            }, {
+              "text": "评论",
+              "link": "/blog/comment"
+            }]
+        }]
+    }]
+}
