@@ -13,7 +13,9 @@
         "@testing": [ "testing/" ],
         "@testing/*": [ "testing/*" ],
         "@env": [ "environments/" ],
-        "@env/*": [ "environments/*" ]
+        "@env/*": [ "environments/*" ],
+        "@services": [ "app/services/" ],
+        "@services/*": [ "app/services/*" ]
     }
   },
   "exclude": [

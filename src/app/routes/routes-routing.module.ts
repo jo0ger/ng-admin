@@ -7,20 +7,21 @@ import { LayoutFullScreenComponent } from '../layout/fullscreen/fullscreen.compo
 import { LayoutPassportComponent } from '../layout/passport/passport.component';
 // dashboard pages
 import { DashboardComponent } from './dashboard/dashboard.component';
-// passport pages
-import { UserLoginComponent } from './passport/login/login.component';
-import { UserRegisterComponent } from './passport/register/register.component';
-import { UserRegisterResultComponent } from './passport/register-result/register-result.component';
+// login pages
 // single pages
+import { LoginComponent } from './login/login.component';
 import { CallbackComponent } from './callback/callback.component';
 import { Exception403Component } from './exception/403.component';
 import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
 
+import { AuthGuardService } from '@services'
+
 const routes: Routes = [
     {
         path: '',
         component: LayoutDefaultComponent,
+        canActivate: [AuthGuardService],
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
@@ -37,13 +38,11 @@ const routes: Routes = [
     // },
     // passport
     {
-        path: 'passport',
-        component: LayoutPassportComponent,
-        children: [
-            { path: 'login', component: UserLoginComponent },
-            { path: 'register', component: UserRegisterComponent },
-            { path: 'register-result', component: UserRegisterResultComponent }
-        ]
+			path: 'login',
+			component: LayoutPassportComponent,
+			children: [
+					{ path: '', component: LoginComponent }
+			]
     },
     // 单页不包裹Layout
     { path: 'callback/:type', component: CallbackComponent },
@@ -55,6 +54,9 @@ const routes: Routes = [
 
 @NgModule({
     imports: [RouterModule.forRoot(routes, { useHash: environment.useHash })],
-    exports: [RouterModule]
+    exports: [RouterModule],
+    providers: [
+			AuthGuardService
+    ]
   })
 export class RouteRoutingModule { }

@@ -4,6 +4,7 @@ import { SimpleInterceptor } from '@delon/auth';
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { StartupService } from './startup/startup.service';
 import { DefaultInterceptor } from './net/default.interceptor';
+import { ApiService } from './api/api.service';
 
 export function StartupServiceFactory(startupService: StartupService): Function {
   return () => startupService.load();
@@ -13,6 +14,7 @@ export function StartupServiceFactory(startupService: StartupService): Function 
     providers: [
       { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true},
       { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true},
+      ApiService,
       StartupService,
       {
           provide: APP_INITIALIZER,

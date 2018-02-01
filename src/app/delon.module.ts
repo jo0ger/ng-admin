@@ -207,7 +207,8 @@ import { DelonCacheModule } from '@delon/cache';
         // auth
         AlainAuthModule.forRoot({
             // ignores: [ `\\/login`, `assets\\/` ],
-            login_url: `/passport/login`
+            login_url: '/login',
+            store_key: 'jooger.me.token'
         }),
         // acl
         AlainACLModule.forRoot(),

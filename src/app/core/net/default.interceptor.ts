@@ -11,6 +11,15 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 
+const enum CODE_MAP {
+	FAILED = -1,
+  SUCCESS = 200,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  SERVER_ERROR = 500,
+  PARAMS_ERROR = 10001
+}
+
 /**
  * 默认HTTP拦截器，其注册细节见 `core.module.ts`
  */
@@ -23,59 +32,77 @@ export class DefaultInterceptor implements HttpInterceptor {
     }
 
     private goTo(url: string) {
-        setTimeout(() => this.injector.get(Router).navigateByUrl(url));
+			// TODO 保存当前URL，登录后跳转该URL
+			setTimeout(() => this.injector.get(Router).navigateByUrl(url));
     }
 
-    private handleData(event: HttpResponse<any> | HttpErrorResponse): Observable<any> {
+    private handleResponse(res: HttpResponse<any>, req: HttpRequest<any>): Observable<any> {
         // 可能会因为 `throw` 导出无法执行 `_HttpClient` 的 `end()` 操作
-        this.injector.get(_HttpClient).end();
-        // 业务处理：一些通用操作
-        switch (event.status) {
-            case 200:
-                // 业务层级错误处理，以下假如响应体的 `status` 若不为 `0` 表示业务级异常
-                // 并显示 `error_message` 内容
+				this.injector.get(_HttpClient).end();
+        const body: any = res.body;
+				if (!body) {
+					this.msg.error('服务器异常');
+					return ErrorObservable.throw(res);
+				}
+				switch (body.code) {
+					case CODE_MAP.UNAUTHORIZED:
+						this.handleUnauth()
+						break;
+					case CODE_MAP.FAILED:
+					case CODE_MAP.FORBIDDEN:
+					case CODE_MAP.SERVER_ERROR:
+					case CODE_MAP.PARAMS_ERROR:
+						this.msg.error(body.message)
+						break;
+					case CODE_MAP.SUCCESS:
+						if (req.method.toUpperCase() !== 'GET') {
+							this.msg.success(body.message || '操作成功')
+						}
+						break;
+					default:
+						break;
+				}
+        return of(res);
+		}
+		
+		handleError (err: HttpErrorResponse): Observable<any> {
+			this.injector.get(_HttpClient).end();
+			if (err.status === CODE_MAP.UNAUTHORIZED) {
+				this.handleUnauth()
+			} else {
+				const status = err.status
+				const message = `请求错误${status ? `，code:${status}` : ''}`
+				this.msg.error(message)
+			}
+			return of(err)
+		}
 
-                // const body: any = event instanceof HttpResponse && event.body;
-                // if (body && body.status !== 0) {
-                //     this.msg.error(body.error_message);
-                //     // 继续抛出错误中断后续所有 Pipe、subscribe 操作，因此：
-                //     // this.http.get('/').subscribe() 并不会触发
-                //     return ErrorObservable.throw(event);
-                // }
-                break;
-            case 401: // 未登录状态码
-                this.goTo('/passport/login');
-                break;
-            case 403:
-            case 404:
-            case 500:
-                this.goTo(`/${event.status}`);
-                break;
-        }
-        return of(event);
-    }
+		handleUnauth () {
+			this.msg.error('请先登录')
+			this.goTo('/login');
+		}
 
     intercept(req: HttpRequest<any>, next: HttpHandler):
         Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
 
         // 统一加上服务端前缀
-        let url = req.url;
+				let url = req.url;
         if (!url.startsWith('https://') && !url.startsWith('http://')) {
-            url = environment.SERVER_URL + url;
+            url = `${environment.SERVER_URL}${url}`;
         }
 
         const newReq = req.clone({
             url: url
         });
         return next.handle(newReq).pipe(
-                    mergeMap((event: any) => {
-                        // 允许统一对请求错误处理，这是因为一个请求若是业务上错误的情况下其HTTP请求的状态是200的情况下需要
-                        if (event instanceof HttpResponse && event.status === 200)
-                            return this.handleData(event);
-                        // 若一切都正常，则后续操作
-                        return of(event);
-                    }),
-                    catchError((err: HttpErrorResponse) => this.handleData(err))
-                );
+					mergeMap((event: any) => {
+							// 允许统一对请求错误处理，这是因为一个请求若是业务上错误的情况下其HTTP请求的状态是200的情况下需要
+							if (event instanceof HttpResponse && event.status === 200)
+									return this.handleResponse(event, req);
+							// 若一切都正常，则后续操作
+							return of(event);
+					}),
+					catchError((err: HttpErrorResponse) => this.handleError(err))
+				);
     }
 }

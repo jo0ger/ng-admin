@@ -17,7 +17,9 @@
         "@testing": [ "testing/" ],
         "@testing/*": [ "testing/*" ],
         "@env": [ "environments/" ],
-        "@env/*": [ "environments/*" ]
+        "@env/*": [ "environments/*" ],
+        "@services": [ "services/" ],
+        "@services/*": [ "services/*" ]
     }
   },
   "files": [
