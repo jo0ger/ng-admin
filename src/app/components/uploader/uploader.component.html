@@ -1,0 +1,11 @@
+<div class="uploader">
+    <nz-upload class="avatar-uploader"
+      nzAction="https://jsonplaceholder.typicode.com/posts/"
+      [nzName]="name"
+      [nzShowUploadList]="false"
+      [nzBeforeUpload]="beforeUpload"
+      (nzChange)="change($event)">
+      <i *ngIf="_url" class="anticon anticon-plus avatar-uploader-trigger"></i>
+      <img *ngIf="_url" [src]="_url" class="uploader-img">
+    </nz-upload>
+</div>

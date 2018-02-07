@@ -1,46 +1,70 @@
-<pro-header [title]="'单号：234231029431'">
-    <ng-template #logo><img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png"></ng-template>
+<pro-header [title]="detail.title">
+    <!-- <ng-template #logo><img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png"></ng-template> -->
     <ng-template #action>
-        <nz-button-group [nzSize]="'large'">
-            <button nz-button>操作</button>
-            <button nz-button>操作</button>
-        </nz-button-group>
-        <nz-dropdown class="mx-sm">
-            <button nz-button nz-dropdown [nzSize]="'large'"><i class="anticon anticon-ellipsis"></i></button>
-            <ul nz-menu>
-                <li nz-menu-item>选项一</li>
-                <li nz-menu-item>选项二</li>
-                <li nz-menu-item>选项三</li>
-            </ul>
-        </nz-dropdown>
-        <button nz-button [nzType]="'primary'" [nzSize]="'large'">主操作</button>
+        <button nz-button [nzType]="'primary'" [nzSize]="'large'">{{ createMode ? '提交' : '保存' }}</button>
     </ng-template>
     <ng-template #content>
-        <desc-list size="small" col="2">
-            <desc-list-item term="创建人">曲丽丽</desc-list-item>
-            <desc-list-item term="订购产品">XX 服务</desc-list-item>
-            <desc-list-item term="创建时间">2017-07-07</desc-list-item>
-            <desc-list-item term="关联单据"><a (click)="msg.success('yes')">12421</a></desc-list-item>
-            <desc-list-item term="生效日期">2017-07-07 ~ 2017-08-08</desc-list-item>
-            <desc-list-item term="备注">请于两个工作日内确认</desc-list-item>
-        </desc-list>
+        <desc-list size="small" col="1">
+						<desc-list-item term="标题">
+							<nz-input [(ngModel)]="detail.title" [nzPlaceHolder]="'请输入简介'"></nz-input>
+						</desc-list-item>
+            <desc-list-item term="状态">
+                <nz-radio-group [nzSize]="'small'" [(ngModel)]="detail.state">
+                    <label nz-radio-button [nzValue]="1">
+                      <span>已发布</span>
+                    </label>
+                    <label nz-radio-button [nzValue]="0">
+                      <span>未发布</span>
+                    </label>
+                </nz-radio-group>
+            </desc-list-item>
+            <desc-list-item term="分类">
+							<nz-checkable-tag *ngFor="let category of categoryList; let idx = index" [nzChecked]="category.selected" (nzChange)="categoryChange($event, idx)">{{category.name}}</nz-checkable-tag>
+						</desc-list-item>
+            <desc-list-item term="标签">
+							<nz-checkable-tag *ngFor="let tag of tagList; let idx = index" [nzChecked]="tag.selected" (nzChange)="tagSelect($event, idx)">{{tag.name}}</nz-checkable-tag>
+						</desc-list-item>
+            <desc-list-item term="关键词">
+							<nz-select
+								nzTags
+								[nzPlaceHolder]="'请输入关键词'"
+								[(ngModel)]="detail.keywords"
+								[nzNotFoundContent]="'无法找到'"
+								[nzShowSearch]="false"
+								style="min-width: 200px;">
+								<nz-option
+									*ngFor="let keyword of keywords"
+									[nzLabel]="keyword"
+									[nzValue]="keyword">
+								</nz-option>
+							</nz-select>
+						</desc-list-item>
+            <desc-list-item term="简介">
+							<nz-input [(ngModel)]="detail.description" [nzType]="'textarea'" [nzRows]="'3'" [nzPlaceHolder]="'请输入简介'"></nz-input>
+						</desc-list-item>
+            <desc-list-item term="链接">
+							<a href="{{ detail.permalink }}" target="_blank">{{ detail.permalink }}</a>
+						</desc-list-item>
+				</desc-list>
     </ng-template>
     <ng-template #extra>
-        <div nz-row>
-            <div nz-col nzXs="24" nzSm="12">
-                <p class="text-grey">状态</p>
-                <p class="text-lg">待审批</p>
-            </div>
-            <div nz-col nzXs="24" nzSm="12">
-                <p class="text-grey">订单金额</p>
-                <p class="text-lg">¥ 568.08</p>
-            </div>
+        <div class="thumb" style="text-align: center;">
+						<img class="img-fluid" src="{{ detail.thumb || 'https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png'}}">
+						<button nz-button class="file-upload mt-md" (click)="updateThumb()">
+							<input id="thumb" accept type="file" (change)="selectThumb($event)" />
+							<div *ngIf="detail.thumb">
+								<i class="anticon anticon-edit"></i><span>更换缩略图</span>
+							</div>
+							<div *ngIf="!detail.thumb">
+								<i class="anticon anticon-upload"></i><span>上传缩略图</span>
+							</div>
+						</button>
         </div>
     </ng-template>
     <ng-template #tab>
         <nz-tabset [nzSize]="'default'">
-            <nz-tab><ng-template #nzTabHeading>详情</ng-template></nz-tab>
-            <nz-tab><ng-template #nzTabHeading>规则</ng-template></nz-tab>
+            <nz-tab><ng-template #nzTabHeading>内容</ng-template></nz-tab>
+            <nz-tab><ng-template #nzTabHeading>评论</ng-template></nz-tab>
         </nz-tabset>
     </ng-template>
 </pro-header>
@@ -115,7 +139,7 @@
 </nz-card>
 <nz-card [nzBordered]="false">
     <nz-card-tab nzTabHeading="操作日志一">
-        <nz-table [nzDataSource]="data.advancedOperation1" [nzIsPagination]="false">
+        <nz-table [nzDataSource]="detail.advancedOperation1" [nzIsPagination]="false">
             <thead nz-thead>
                 <tr>
                     <th nz-th><span>操作类型</span></th>
@@ -126,7 +150,7 @@
                 </tr>
             </thead>
             <tbody nz-tbody>
-                <tr nz-tbody-tr *ngFor="let i of data.advancedOperation1">
+                <tr nz-tbody-tr *ngFor="let i of detail.advancedOperation1">
                     <td nz-td>{{i.type}}</td>
                     <td nz-td>{{i.name}}</td>
                     <td nz-td>
@@ -140,7 +164,7 @@
         </nz-table>
     </nz-card-tab>
     <nz-card-tab nzTabHeading="操作日志二">
-        <nz-table [nzDataSource]="data.advancedOperation2" [nzIsPagination]="false">
+        <nz-table [nzDataSource]="detail.advancedOperation2" [nzIsPagination]="false">
             <thead nz-thead>
                 <tr>
                     <th nz-th><span>操作类型</span></th>
@@ -151,7 +175,7 @@
                 </tr>
             </thead>
             <tbody nz-tbody>
-                <tr nz-tbody-tr *ngFor="let i of data.advancedOperation2">
+                <tr nz-tbody-tr *ngFor="let i of detail.advancedOperation2">
                     <td nz-td>{{i.type}}</td>
                     <td nz-td>{{i.name}}</td>
                     <td nz-td>
@@ -165,7 +189,7 @@
         </nz-table>
     </nz-card-tab>
     <nz-card-tab nzTabHeading="操作日志三">
-        <nz-table [nzDataSource]="data.advancedOperation3" [nzIsPagination]="false">
+        <nz-table [nzDataSource]="detail.advancedOperation3" [nzIsPagination]="false">
             <thead nz-thead>
                 <tr>
                     <th nz-th><span>操作类型</span></th>
@@ -176,7 +200,7 @@
                 </tr>
             </thead>
             <tbody nz-tbody>
-                <tr nz-tbody-tr *ngFor="let i of data.advancedOperation3">
+                <tr nz-tbody-tr *ngFor="let i of detail.advancedOperation3">
                     <td nz-td>{{i.type}}</td>
                     <td nz-td>{{i.name}}</td>
                     <td nz-td>

@@ -36,7 +36,7 @@
                         <nz-avatar [nzSrc]="item.thumb" [nzSize]="'large'" [nzShape]="'square'"></nz-avatar>
                     </ng-template>
                     <ng-template #nzDescription>
-                        <p class="description">{{ item.description }}</p>
+                        <ellipsis lines="3" class="description">{{ item.description }}</ellipsis>
                         <div class="metas">
                             <div class="meta-item pvs">
                                 <i class="anticon anticon-eye-o mr-sm"></i>{{item.meta.pvs}}
@@ -66,7 +66,7 @@
             </nz-list-item>
         </ng-template>
         <ng-template #pagination>
-            <nz-pagination [nzTotal]="pager.total" [nzPageSize]="pager.per_page" [nzSize]="'large'" nzShowTotal (nzPageIndexChange)="getArticleList($event)"></nz-pagination>
+            <nz-pagination [nzTotal]="pager.total" [nzSize]="'large'" nzShowTotal (nzPageIndexChange)="pageChange($event)"></nz-pagination>
         </ng-template>
     </nz-list>
 </nz-card>
