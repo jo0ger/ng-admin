@@ -10,14 +10,14 @@ import { UserListComponent } from './user/list/list.component'
 import { UserDetailComponent } from './user/detail/detail.component'
 
 const routes: Routes = [
-  { path: 'article', component: ArticleListComponent },
-  { path: 'article/:articleId/detail', component: ArticleDetailComponent },
-  { path: 'article/create', component: ArticleDetailComponent },
-  { path: 'category', component: CategoryComponent },
-  { path: 'tag', component: TagComponent },
-  { path: 'comment', component: CommentComponent },
-  { path: 'user', component: UserListComponent },
-  { path: 'user/:userId/detail', component: UserDetailComponent },
+  { path: 'article', component: ArticleListComponent, data: { title: '博客文章' } },
+  { path: 'article/:articleId/detail', component: ArticleDetailComponent, data: { title: '文章详情' } },
+  { path: 'article/create', component: ArticleDetailComponent, data: { title: '新建文章' } },
+  { path: 'category', component: CategoryComponent, data: { title: '文章分类' } },
+  { path: 'tag', component: TagComponent, data: { title: '文章标签' } },
+  { path: 'comment', component: CommentComponent, data: { title: '文章评论' } },
+  { path: 'user', component: UserListComponent, data: { title: '博客用户' } },
+  { path: 'user/:userId/detail', component: UserDetailComponent, data: { title: '用户详情' } },
 ];
 
 @NgModule({

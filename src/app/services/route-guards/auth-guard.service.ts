@@ -24,9 +24,9 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
     const tokenData = this.tokenService.get()
     const isNoCheckPage = this.getNoCheckPage(url)
     if (tokenData && tokenData.token) {
-      if (!this.store.stat) {
-        this.setStat()
-      }
+      // if (!this.store.stat) {
+      //   this.setStat()
+      // }
       if (isNoCheckPage) {
         this.msg.success('已登录')
         this.router.navigateByUrl('/')

@@ -57,6 +57,7 @@ export class DefaultInterceptor implements HttpInterceptor {
 					case CODE_MAP.SERVER_ERROR:
 					case CODE_MAP.PARAMS_ERROR:
 						this.msg.error(body.message)
+						// TODO 跳转错误页面
 						break;
 					case CODE_MAP.SUCCESS:
 						if (req.method.toUpperCase() !== 'GET') {

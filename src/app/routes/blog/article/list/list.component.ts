@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { NzMessageService } from 'ng-zorro-antd';
 import { ApiService } from '@core/api/api.service';
-import { StoreService } from '@core/store/store.service';
-import { ACLGuard } from '@delon/acl';
 
 @Component({
 		selector: 'app-article-list',
@@ -37,7 +35,6 @@ export class ArticleListComponent implements OnInit {
 	constructor(
 		public msg: NzMessageService,
 		private api: ApiService,
-		private store: StoreService,
 		private router: Router
 	) {}
 
