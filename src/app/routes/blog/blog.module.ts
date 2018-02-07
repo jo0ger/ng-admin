@@ -6,6 +6,9 @@ import { TagComponent } from './tag/tag.component';
 import { CommentComponent } from './comment/comment.component';
 import { ArticleListComponent } from './article/list/list.component';
 import { ArticleDetailComponent } from './article/detail/detail.component';
+import { UserListComponent } from './user/list/list.component';
+import { UserDetailComponent } from './user/detail/detail.component';
+import { BlogStatComponent } from '@components/blog-stat/blog-stat.component';
 
 @NgModule({
   imports: [
@@ -17,7 +20,10 @@ import { ArticleDetailComponent } from './article/detail/detail.component';
     ArticleDetailComponent,
     CategoryComponent,
     TagComponent,
-    CommentComponent
-]
+    CommentComponent,
+    UserListComponent,
+    UserDetailComponent,
+    BlogStatComponent
+  ]
 })
 export class BlogModule { }

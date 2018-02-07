@@ -21,26 +21,28 @@
             "icon": "icon-settings"
         }]
     }, {
-        "text": "内容管理",
+        "text": "博客管理",
         "group": true,
         "children": [{
-            "text": "博客管理",
-            "link": "/blog",
-            "icon": "icon-grid",
-            "group": true,
-            "children": [{
-              "text": "文章",
-              "link": "/blog/article"
-            }, {
-              "text": "分类",
-              "link": "/blog/category"
-            }, {
-              "text": "标签",
-              "link": "/blog/tag"
-            }, {
-              "text": "评论",
-              "link": "/blog/comment"
-            }]
-        }]
+            "text": "文章",
+            "icon": "icon-book-open",
+            "link": "/blog/article"
+          }, {
+            "text": "分类",
+            "icon": "icon-speedometer",
+            "link": "/blog/category"
+          }, {
+            "text": "标签",
+            "icon": "icon-tag",
+            "link": "/blog/tag"
+          }, {
+            "text": "评论",
+            "icon": "icon-speech",
+            "link": "/blog/comment"
+          }, {
+            "text": "用户",
+            "icon": "icon-user",
+            "link": "/blog/user"
+          }]
     }]
 }

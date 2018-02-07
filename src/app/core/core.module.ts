@@ -5,6 +5,7 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
 import { StartupService } from './startup/startup.service';
 import { DefaultInterceptor } from './net/default.interceptor';
 import { ApiService } from './api/api.service';
+import { StoreService } from './store/store.service';
 
 export function StartupServiceFactory(startupService: StartupService): Function {
   return () => startupService.load();
@@ -15,6 +16,7 @@ export function StartupServiceFactory(startupService: StartupService): Function 
       { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true},
       { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true},
       ApiService,
+      StoreService,
       StartupService,
       {
           provide: APP_INITIALIZER,

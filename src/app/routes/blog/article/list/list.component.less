@@ -1,0 +1,51 @@
+@import '~@delon/theme/styles/antd/themes/default.less';
+
+.header-info {
+  position: relative;
+  text-align: center;
+  > em {
+      background-color: #e8e8e8;
+      position: absolute;
+      height: 56px;
+      width: 1px;
+      top: 0;
+      right: 0;
+  }
+}
+
+.time {
+    width: 150px;
+    margin: 0 16px;
+    font-size: @font-size-base;
+}
+
+.description {
+    font-size: @font-size-base;
+}
+.metas {
+    .meta-item {
+        display: inline-block;
+        padding: 0 16px;
+        font-size: @font-size-base;
+        &:first-child {
+            padding-left: 0;
+        }
+    }
+}
+
+.category,
+.status {
+    display: flex;
+    align-items: center;
+    width: 60px;
+    margin: 0 24px;
+}
+
+@media screen and (max-width: 576px) {
+  .header-info {
+      margin-bottom: 16px;
+      > em {
+          display: none;
+      }
+  }
+}

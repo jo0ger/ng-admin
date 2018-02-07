@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse,
          HttpSentEvent, HttpHeaderResponse, HttpProgressEvent, HttpResponse, HttpUserEvent,
@@ -9,6 +9,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { mergeMap, catchError } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
+import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth'
 import { environment } from '@env/environment';
 
 const enum CODE_MAP {
@@ -25,7 +26,10 @@ const enum CODE_MAP {
  */
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
-    constructor(private injector: Injector) {}
+    constructor(
+			private injector: Injector,
+			@Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService
+		) {}
 
     get msg(): NzMessageService {
         return this.injector.get(NzMessageService);
@@ -79,7 +83,8 @@ export class DefaultInterceptor implements HttpInterceptor {
 
 		handleUnauth () {
 			this.msg.error('请先登录')
-			this.goTo('/login');
+			this.tokenService.clear()
+			this.goTo(this.tokenService.login_url)
 		}
 
     intercept(req: HttpRequest<any>, next: HttpHandler):

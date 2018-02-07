@@ -1,5 +1,5 @@
 <form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
-    <h2>登录</h2>
+    <h2 class="title">登录</h2>
     <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
     <div nz-form-item>
         <div nz-form-control [nzValidateStatus]="name">

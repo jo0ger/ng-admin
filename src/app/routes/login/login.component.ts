@@ -36,7 +36,7 @@ export class LoginComponent {
 
     // endregion
 
-    submit() {
+    submit () {
         this.error = '';
         this.name.markAsDirty();
         this.password.markAsDirty();
@@ -57,5 +57,5 @@ export class LoginComponent {
 				}).catch(() => {
 					this.loading = false
 				})
-    }
+		}
 }

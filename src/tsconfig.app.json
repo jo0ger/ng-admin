@@ -15,7 +15,9 @@
         "@env": [ "environments/" ],
         "@env/*": [ "environments/*" ],
         "@services": [ "app/services/" ],
-        "@services/*": [ "app/services/*" ]
+        "@services/*": [ "app/services/*" ],
+        "@components": [ "app/components/" ],
+        "@components/*": [ "app/components/*" ]
     }
   },
   "exclude": [

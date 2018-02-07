@@ -15,7 +15,7 @@ import { Exception403Component } from './exception/403.component';
 import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
 
-import { AuthGuardService } from '@services'
+import { AuthGuardService } from '@services';
 
 const routes: Routes = [
     {
@@ -27,6 +27,7 @@ const routes: Routes = [
             { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
             { path: 'option', loadChildren: './option/option.module#OptionModule', data: { title: '站点参数' } },
             { path: 'blog', loadChildren: './blog/blog.module#BlogModule' },
+            { path: 'account', loadChildren: './account/account.module#AccountModule' }
         ]
     },
     // 全屏布局
@@ -40,6 +41,7 @@ const routes: Routes = [
     {
 			path: 'login',
 			component: LayoutPassportComponent,
+			canActivate: [AuthGuardService],
 			children: [
 					{ path: '', component: LoginComponent }
 			]
