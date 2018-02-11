@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
-const OSS = require('ali-oss');
-
 import 'rxjs/add/operator/toPromise';
 
+const OSS: any = require('ali-oss');
 const slice = obj => Array.prototype.slice.call(obj);
 
 @Injectable()

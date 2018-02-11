@@ -1,3 +1,7 @@
+interface ExtendItem {
+  [key: string]: any;
+}
+
 interface Meta {
   pvs: number;
   ups: number;
@@ -30,4 +34,27 @@ export interface Statistics {
   user?: number;
   comment?: number;
   guestComment?: number;
+}
+
+export interface Category {
+  [key: string]: any;
+  _id?: string;
+  name: string;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  list: number;
+  extends?: ExtendItem[];
+  count?: number;
+}
+
+export interface Tag {
+  [key: string]: any;
+  _id?: string;
+  name: string;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  extends?: ExtendItem[];
+  count?: number;
 }

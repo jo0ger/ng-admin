@@ -33,7 +33,7 @@
                         <a href="{{item.permalink}}" target="_blank">{{item.title}}</a>
                     </ng-template>
                     <ng-template #nzAvatar>
-                        <nz-avatar [nzSrc]="item.thumb" [nzSize]="'large'" [nzShape]="'square'"></nz-avatar>
+                        <nz-avatar class="thumb" [nzSrc]="item.thumb" [nzSize]="'large'" [nzShape]="'square'"></nz-avatar>
                     </ng-template>
                     <ng-template #nzDescription>
                         <ellipsis lines="3" class="description">{{ item.description }}</ellipsis>
@@ -65,6 +65,7 @@
                 </ng-template>
             </nz-list-item>
         </ng-template>
+        <div class="mt-md mb-md text-center" *ngIf="!list.length">没有数据</div>
         <ng-template #pagination>
             <nz-pagination [nzTotal]="pager.total" [nzSize]="'large'" nzShowTotal (nzPageIndexChange)="pageChange($event)"></nz-pagination>
         </ng-template>

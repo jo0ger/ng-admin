@@ -5,8 +5,8 @@ import { ApiService } from '@core/api/api.service';
 import { BlogService } from '../../blog.service';
 
 import 'rxjs/add/operator/switchMap';
-const _ = require('lodash');
-const moment = require('moment');
+const _: any = require('lodash');
+const moment: any = require('moment');
 
 @Component({
   selector: 'app-article-detail',
@@ -45,11 +45,14 @@ export class ArticleDetailComponent implements OnInit {
     if (this.articleId) {
       this.createMode = false;
     }
-    Promise.all([
-      this.getArticleDetail(),
+    const tasks = [
       this.getCategoryList(),
       this.getTagList()
-    ].slice(this.createMode ? 1 : 0, 3)).then(() => {
+    ];
+    if (!this.createMode) {
+      tasks.push(this.getArticleDetail());
+    }
+    Promise.all(tasks).then(() => {
       if (this.detail.category) {
         for (let i = 0; i < this.categoryList.length; i++) {
           const category = this.categoryList[i];
@@ -73,7 +76,7 @@ export class ArticleDetailComponent implements OnInit {
 
   setModel (data) {
     this.detail = data;
-    this.keywords = this.detail.keywords.slice();
+    this.keywords = this.detail.keywords && this.detail.keywords.slice() || [];
     this.model = _.cloneDeep(data);
   }
 

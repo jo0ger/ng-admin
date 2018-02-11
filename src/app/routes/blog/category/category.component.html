@@ -1,3 +1,117 @@
-<p>
-  category works!
-</p>
+<pro-header></pro-header>
+<nz-card [nzBordered]="false">
+    <div class="d-flex align-items-center mb-lg">
+        <h3 class="flex-1 text-lg">全部分类</h3>
+        <div>
+            <nz-input [nzType]="'search'" [nzPlaceHolder]="'搜索'" [(ngModel)]="filter.keyword" [nzSize]="'large'" style="width: 272px"
+                (nzOnSearch)="search()"></nz-input>
+        </div>
+    </div>
+    <button nz-button (click)="add()" [nzType]="'dashed'" [nzSize]="'large'" class="ant-btn__block mb-sm">
+        <i class="anticon anticon-plus"></i>
+        <span>添加</span>
+    </button>
+    <div class="mb-md">
+        <nz-alert [nzType]="'info'" [nzShowIcon]="true">
+            <span alert-body>
+                分类总计 <strong>{{ list.length }}</strong> 个
+            </span>
+        </nz-alert>
+    </div>
+    <nz-table #nzTable [nzDataSource]="list" [nzLoading]="loading" [nzIsPagination]="false">
+        <thead nz-thead>
+            <tr>
+                <th nz-th [nzWidth]="'80'">
+                    <span>名称</span>
+                </th>
+                <th nz-th>
+                    <span>描述</span>
+                </th>
+                <th nz-th>
+                    <span>排序</span>
+                </th>
+                <th nz-th>
+                    <span>文章数</span>
+                </th>
+                <th nz-th>
+                    <span>创建时间</span>
+                </th>
+                <th nz-th>
+                    <span>更新时间</span>
+                </th>
+                <th nz-th>
+                    <span>操作</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let item of list; let idx = index">
+                <td nz-td>{{ item.name }}</td>
+                <td nz-td>{{ item.description }}</td>
+                <td nz-td>{{ item.list }}</td>
+                <td nz-td>{{ item.count }}</td>
+                <td nz-td>{{ item.createdAt | _date}}</td>
+                <td nz-td>{{ item.updatedAt | _date}}</td>
+                <td nz-td>
+                    <nz-dropdown>
+                        <a class="ant-dropdown-link" nz-dropdown>
+                            移动
+                            <i class="anticon anticon-down"></i>
+                        </a>
+                        <ul nz-menu>
+                            <li nz-menu-item *ngIf="idx > 0" (click)="move(idx, idx - 1)">上移</li>
+                            <li nz-menu-item *ngIf="idx < list.length - 1" (click)="move(idx, idx + 1)">下移</li>
+                        </ul>
+                    </nz-dropdown>
+                    <span nz-table-divider></span>
+                    <a (click)="edit(idx)">编辑</a>
+                    <span nz-table-divider></span>
+                    <nz-popconfirm [nzTitle]="'确认删除？'" (nzOnConfirm)="delete(idx)">
+                        <a nz-popconfirm>删除</a>
+                    </nz-popconfirm>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<nz-modal [nzVisible]="modalVisible" [nzTitle]="model._id ? '编辑分类' : '新建分类'" [nzConfirmLoading]="loading" [nzContent]="modalContent"
+    [nzFooter]="modalFooter" (nzOnCancel)="cancel()">
+    <ng-template #modalContent>
+        <form nz-form>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4">
+                    <label>名称</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18">
+                    <nz-input [(ngModel)]="model.name" name="name" [nzSize]="'large'" [nzPlaceHolder]="'请输入分类名'"></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4">
+                    <label>描述</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18">
+                    <nz-input name="description" [(ngModel)]="model.description" [nzType]="'textarea'" [nzRows]="'4'" [nzPlaceHolder]="'请输入简介'"></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4">
+                    <label>排序</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18">
+                    <nz-input-number name="list" [(ngModel)]="model.list" [nzMin]="1" [nzStep]="1"></nz-input-number>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+    <ng-template #modalFooter>
+        <div class="text-center">
+            <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="cancel()">
+                取 消
+            </button>
+            <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="submit()" [nzLoading]="loading">
+                提 交
+            </button>
+        </div>
+    </ng-template>
+</nz-modal>

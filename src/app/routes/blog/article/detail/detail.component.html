@@ -2,7 +2,7 @@
     <ng-template #action>
 			<button nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="loading" (click)="submit()">{{ createMode ? '提交' : '保存' }}</button>
 			<nz-dropdown class="mx-sm">
-					<button nz-button nz-dropdown [nzSize]="'large'">发布</button>
+					<button nz-button nz-dropdown [nzSize]="'large'">发布<i class="anticon anticon-down"></i></button>
 					<ul nz-menu>
 						<li nz-menu-item (click)="publish('1')">直接发布</li>
 						<li nz-menu-item (click)="publish('0')">保存草稿</li>
@@ -18,7 +18,7 @@
 	<div nz-col [nzMd]="16">
 		<nz-card [nzBordered]="false" class="mb-md" [nzTitle]="'基本信息'">
 			<form nz-form>
-				<div nz-form-item nz-row>
+				<div nz-form-item nz-row *ngIf="detail.permalink">
 						<div nz-form-label nz-col [nzSm]="3">
 								<label>
 										链接
@@ -28,7 +28,7 @@
 								</label>
 						</div>
 						<div nz-form-control nz-col [nzSm]="18">
-								<span nz-form-text>{{ detail.permalink || '暂无' }}</span>
+								<span nz-form-text>{{ detail.permalink }}</span>
 						</div>
 				</div>
 				<div nz-form-item nz-row>
@@ -85,10 +85,10 @@
 					<i class="icon" :class="[`icon-${category.icon}`]" *ngIf="category.icon"></i>
 					<span class="name">{{ category.name }}</span>
 				</span> -->
-				<nz-checkable-tag *ngFor="let category of categoryList; let idx = index" [nzChecked]="category.selected" (nzChange)="categoryChange(idx)">{{category.name}}</nz-checkable-tag>
+				<nz-checkable-tag class="category-item" *ngFor="let category of categoryList; let idx = index" [nzChecked]="category.selected" (nzChange)="categoryChange(idx)">{{category.name}}</nz-checkable-tag>
 			</nz-card>
 			<nz-card [nzBordered]="false" [nzTitle]="'标签目录'" class="mb-md">
-					<nz-checkable-tag *ngFor="let tag of tagList; let idx = index" [nzChecked]="tag.selected" (nzChange)="tagSelect($event, idx)">{{tag.name}}</nz-checkable-tag>
+					<nz-checkable-tag class="tag-item" *ngFor="let tag of tagList; let idx = index" [nzChecked]="tag.selected" (nzChange)="tagSelect($event, idx)">{{tag.name}}</nz-checkable-tag>
 			</nz-card>
 			<nz-card [nzBordered]="false" [nzTitle]="'缩略图'" class="mb-md">
 				<app-uploader [url]="model.thumb" [title]="'缩略图'" [name]="uploadName" (onUpload)="updateThumb($event)"></app-uploader>

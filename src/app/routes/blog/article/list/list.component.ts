@@ -64,7 +64,7 @@ export class ArticleListComponent implements OnInit {
         this.list = res.data.list;
         this.pager = res.data.pagination;
       }
-    }).catch(err => (this.loading = false));
+    });
   }
 
   changeState (state) {
