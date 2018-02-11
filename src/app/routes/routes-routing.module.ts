@@ -18,47 +18,39 @@ import { Exception500Component } from './exception/500.component';
 import { AuthGuardService } from '@services';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: LayoutDefaultComponent,
-        canActivate: [AuthGuardService],
-        children: [
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
-            { path: 'option', loadChildren: './option/option.module#OptionModule', data: { title: '站点参数' } },
-            { path: 'blog', loadChildren: './blog/blog.module#BlogModule' },
-            { path: 'account', loadChildren: './account/account.module#AccountModule' }
-        ]
-    },
-    // 全屏布局
-    // {
-    //     path: 'fullscreen',
-    //     component: LayoutFullScreenComponent,
-    //     children: [
-    //     ]
-    // },
-    // passport
-    {
-			path: 'login',
-			component: LayoutPassportComponent,
-			canActivate: [AuthGuardService],
-			children: [
-					{ path: '', component: LoginComponent }
-			]
-    },
-    // 单页不包裹Layout
-    { path: 'callback/:type', component: CallbackComponent },
-    { path: '403', component: Exception403Component },
-    { path: '404', component: Exception404Component },
-    { path: '500', component: Exception500Component },
-    { path: '**', redirectTo: 'dashboard' }
+  {
+    path: '',
+    component: LayoutDefaultComponent,
+    canActivate: [AuthGuardService],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
+      { path: 'option', loadChildren: './option/option.module#OptionModule', data: { title: '站点参数' } },
+      { path: 'blog', loadChildren: './blog/blog.module#BlogModule' },
+      { path: 'account', loadChildren: './account/account.module#AccountModule' }
+    ]
+  },
+  {
+    path: 'login',
+    component: LayoutPassportComponent,
+    canActivate: [AuthGuardService],
+    children: [
+      { path: '', component: LoginComponent }
+    ]
+  },
+  // 单页不包裹Layout
+  { path: 'callback/:type', component: CallbackComponent },
+  { path: '403', component: Exception403Component },
+  { path: '404', component: Exception404Component },
+  { path: '500', component: Exception500Component },
+  { path: '**', redirectTo: 'dashboard' }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { useHash: environment.useHash })],
-    exports: [RouterModule],
-    providers: [
-			AuthGuardService
-    ]
-  })
+  imports: [RouterModule.forRoot(routes, { useHash: environment.useHash })],
+  exports: [RouterModule],
+  providers: [
+    AuthGuardService
+  ]
+})
 export class RouteRoutingModule { }

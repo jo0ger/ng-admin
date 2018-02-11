@@ -1,1 +1,1 @@
-export * from './route-guards'
+export * from './route-guards';

@@ -16,22 +16,22 @@ registerLocaleData(localeZhHans);
 
 
 @NgModule({
-    declarations: [
-        AppComponent
-    ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        DelonModule.forRoot(),
-        CoreModule,
-        SharedModule,
-        LayoutModule,
-        RoutesModule
-    ],
-    providers: [
-        { provide: LOCALE_ID, useValue: 'zh-Hans' },
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    DelonModule.forRoot(),
+    CoreModule,
+    SharedModule,
+    LayoutModule,
+    RoutesModule
+  ],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'zh-Hans' },
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

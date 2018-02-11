@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router, CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
-import { NzMessageService } from 'ng-zorro-antd'
+import { NzMessageService } from 'ng-zorro-antd';
 import { ApiService } from '@core/api/api.service';
 import { StoreService } from '@core/store/store.service';
 
@@ -17,40 +17,40 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
   ) {}
 
   private getNoCheckPage (url: string): boolean {
-    return [this.tokenService.login_url].includes(url)
+    return [this.tokenService.login_url].includes(url);
   }
 
   private checkLogin (url: string): boolean {
-    const tokenData = this.tokenService.get()
-    const isNoCheckPage = this.getNoCheckPage(url)
+    const tokenData = this.tokenService.get();
+    const isNoCheckPage = this.getNoCheckPage(url);
     if (tokenData && tokenData.token) {
       // if (!this.store.stat) {
       //   this.setStat()
       // }
       if (isNoCheckPage) {
-        this.msg.success('已登录')
-        this.router.navigateByUrl('/')
-        return false
+        this.msg.success('已登录');
+        this.router.navigateByUrl('/');
+        return false;
       }
-      return true
+      return true;
     } else if (isNoCheckPage) {
-      return true
+      return true;
     }
-    this.router.navigateByUrl(this.tokenService.login_url)
+    this.router.navigateByUrl(this.tokenService.login_url);
   }
 
   canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    let url: string = state.url
-    return this.checkLogin(url)
+    const url: string = state.url;
+    return this.checkLogin(url);
   }
 
   canActivateChild (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return this.canActivate(route, state)
+    return this.canActivate(route, state);
   }
 
   private setStat (): void {
     this.api.getStat().then(data => {
-      this.store.setStat(data)
-    })
+      this.store.setStat(data);
+    });
   }
 }
