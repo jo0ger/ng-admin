@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpHeaders } from '@angular/common/http'
 import { _HttpClient } from '@delon/theme'
 import { environment } from '@env/environment'
+const OSS = require('ali-oss')
 
 import 'rxjs/add/operator/toPromise'
 
@@ -16,6 +17,7 @@ export class ApiService {
     withCredentials: true,
     responseType: 'json'
   }
+  private _aliyunClient = null
 
   constructor (
     private http: _HttpClient
@@ -112,4 +114,29 @@ export class ApiService {
   public updateMoment = (momentId: string) => this.patch(`/moment/${momentId}`)
 
   public deleteMoment = (momentId: string) => this.delete(`/moment/${momentId}`)
+
+  public getAliyunCredential = this.get('/aliyun/oss')
+
+  /**
+   * 阿里云
+   */
+
+  private getAliyunClient () {
+    if (this._aliyunClient && this._aliyunClient instanceof OSS.Wrapper) return Promise.resolve()
+    return this.getAliyunCredential().then(res => {
+      if (res.success && res.data) {
+        this._aliyunClient = new OSS.Wrapper(res.data)
+      }
+    })
+  }
+
+  public multipartUpload (name: string, file, options?: any) {
+    return this.getAliyunClient()
+      .then(() => this._aliyunClient.multipartUpload(name, file, Object.assign({}, options)))
+      .then(res => {
+        return {
+          url: res.res.requestUrls[0].replace(`http://${this._aliyunClient.options.bucket}.${this._aliyunClient.options.region}.aliyuncs.com`, 'https://static.jooger.me') || ''
+        }
+      })
+  }
 }

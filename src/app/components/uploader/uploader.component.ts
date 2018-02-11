@@ -1,17 +1,22 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ApiService } from '@core/api//api.service'
+import { NzMessageService } from 'ng-zorro-antd'
 
 @Component({
-	selector: '[uploader]',
+	selector: 'app-uploader',
 	templateUrl: './uploader.component.html',
-	styles: [ './uploader.component.less' ]
+	styleUrls: [ './uploader.component.less' ]
 })
-export class UploaderComponent implements OnInit {
+export class UploaderComponent {
 
 	_url: string;
+	uploading: boolean = false;
+	file: any = null;
+	showCropperModal: boolean = false;
 
-	@Input() title: string;
+	@Input() title: string = '图片';
 
-	@Input() name: string;
+	@Input() name: string = new Date().getTime().toString();
 
 	@Input()
 	set url (val: string) {
@@ -22,15 +27,44 @@ export class UploaderComponent implements OnInit {
 		return this._url;
 	}
 
+	@Input() cropper: boolean = false;
+
 	@Output() onUpload = new EventEmitter<string>();
 
-	constructor() { }
+	constructor (
+		private api: ApiService,
+		private msg: NzMessageService
+	) {}
 
-	ngOnInit() {}
+	beforeUpload = (file): boolean => {
+		this.file = file
+		return !this.cropper
+	}
 
-	change (info: { file }) {}
+	change () {
+		if (!this.cropper) {
+			this.upload()
+		}
+	}
 
-	select () {}
+	upload () {
+		if (!this.file) {
+			return this.msg.warning('请选择图片')
+		}
+		this.uploading = true
+		const filename = this.file.name.split('.').join(`_${new Date().getTime()}.`)
+		this.api.multipartUpload('img/' + this.name + filename, this.file).then(res => {
+			this.uploading = false
+			this.onUpload.emit(res.url)
+		})
+	}
 
-	upload () {}
+	cancel () {}
+
+	delete (event) {
+		event.preventDefault()
+		event.stopPropagation()
+		this.file = null
+		this.onUpload.emit('')
+	}
 }

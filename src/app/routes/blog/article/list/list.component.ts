@@ -95,7 +95,9 @@ export class ArticleListComponent implements OnInit {
 		});
 	}
 
-	add () {}
+	add () {
+		this.router.navigateByUrl(`/blog/article/create`);
+	}
 
 	edit (article) {
 		this.router.navigateByUrl(`/blog/article/${article._id}/detail`);

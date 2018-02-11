@@ -21,7 +21,7 @@
                 <nz-list-item-action *ngIf="item.state === 1"><a (click)="togglePublish(index)">下线</a></nz-list-item-action>
                 <nz-list-item-action><a (click)="edit(item)">编辑</a></nz-list-item-action>
                 <nz-list-item-action>
-                    <nz-popconfirm [nzTitle]="'此操作将永久删除该篇文章, 是否继续?'" (nzOnConfirm)="delete(item)">
+                    <nz-popconfirm [nzTitle]="'此操作将永久删除该篇文章, 是否继续?'" (nzOnConfirm)="delete(index)">
                         <a nz-popconfirm>删除</a>
                     </nz-popconfirm>
                 </nz-list-item-action>

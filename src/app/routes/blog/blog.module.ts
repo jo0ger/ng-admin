@@ -8,7 +8,8 @@ import { ArticleListComponent } from './article/list/list.component';
 import { ArticleDetailComponent } from './article/detail/detail.component';
 import { UserListComponent } from './user/list/list.component';
 import { UserDetailComponent } from './user/detail/detail.component';
-import { BlogStatComponent } from '@components/blog-stat/blog-stat.component';
+import { UploaderComponent } from '@components';
+import { BlogService } from './blog.service';
 
 @NgModule({
   imports: [
@@ -23,7 +24,10 @@ import { BlogStatComponent } from '@components/blog-stat/blog-stat.component';
     CommentComponent,
     UserListComponent,
     UserDetailComponent,
-    BlogStatComponent
+    UploaderComponent
+  ],
+  providers: [
+    BlogService
   ]
 })
 export class BlogModule { }

@@ -1,11 +1,43 @@
 <div class="uploader">
+  <div class="upload-img-wrapper mb-md" *ngIf="url">
+    <img [src]="url" alt="">
+  </div>
+  <div class="uploader-action">
     <nz-upload class="avatar-uploader"
-      nzAction="https://jsonplaceholder.typicode.com/posts/"
-      [nzName]="name"
       [nzShowUploadList]="false"
+      [nzFileType]="'image/png,image/jpeg,image/gif'"
       [nzBeforeUpload]="beforeUpload"
-      (nzChange)="change($event)">
-      <i *ngIf="_url" class="anticon anticon-plus avatar-uploader-trigger"></i>
-      <img *ngIf="_url" [src]="_url" class="uploader-img">
+      (nzChange)="change()">
+      <div nz-row [nzGutter]="16">
+        <div nz-col [nzMd]="12">
+          <button nz-button [nzType]="'primary'" [nzLoading]="uploading">
+            <i class="anticon anticon-upload"></i>
+            {{ url ? '更换' : '上传' }}
+          </button>
+        </div>
+        <div nz-col [nzMd]="12">
+          <button nz-button [nzType]="'danger'" (click)="delete($event)" *ngIf="url">
+            <i class="anticon anticon-delete"></i>
+            删除
+          </button>
+        </div>
+      </div>
     </nz-upload>
+  </div>
+  <nz-modal [nzVisible]="showCropperModal" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="cancel($event)">
+    <ng-template #modalTitle>
+      {{ title }}裁剪
+    </ng-template>
+    <ng-template #modalContent>
+      
+    </ng-template>
+    <ng-template #modalFooter>
+      <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="cancel($event)">
+        取 消
+      </button>
+      <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="upload($event)" [nzLoading]="uploading">
+        确 认
+      </button>
+    </ng-template>
+  </nz-modal>
 </div>
