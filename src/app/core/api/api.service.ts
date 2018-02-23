@@ -114,6 +114,16 @@ export class ApiService {
 
   public deleteMoment = (momentId: string) => this.delete(`/moment/${momentId}`);
 
+  public getNotificationList = this.get('/notifications')
+
+  public getNotificationUnviewedCount = this.get('/notifications/count')
+
+  public viewNotification = (notificationId: string) => this.post(`/notifications/${notificationId}/view`)
+
+  public viewAllNotification = this.post('/notifications/viewall')
+
+  public deleteNotification = (notificationId: string) => this.delete(`/notifications/${notificationId}`)
+
   public getAliyunCredential = this.get('/aliyun/oss');
 
   /**
